@@ -35,25 +35,13 @@ lab.link_rooms(armoury,"west")
 lab.link_rooms(dimension,"portal")
 dimension.link_rooms(lab,"portal")
 
-# create characters
-ugine = Enemy("Ugine")
-ugine.description = "a huge troll with rotting teeth."
-ugine.weakness = "cheese"
-
-nigel = Friend("Nigel")
-nigel.description = "a burly dwarf with golden bead in woven through his beard."
-nigel.conversation = "Well youngan, what are you doing here?"
-
-# add characters to rooms
-armoury.character = ugine
-lab.character = nigel
-
 # create items
 cheese = Item("Cheese")
 cheese.description = "super smelly"
 
-chair = Item("Chair")
-chair.description = "designed to be sat on"
+sword = Item("Sword")
+sword.description = "very pointy and kind of hurty"
+sword.damage = 2
 
 elmo = Item("Elmo")
 elmo.description = "wanting to be tickled"
@@ -62,10 +50,23 @@ key = Item("Key")
 key.description = "This something that might unlock something else."
 
 # add items to rooms
-cavern.item = chair
+cavern.item = sword
 armoury.item = elmo
 lab.item = cheese
 dimension.item = key
+
+# create characters
+ugine = Enemy("Ugine")
+ugine.description = "a huge troll with rotting teeth."
+ugine.weakness = cheese
+
+nigel = Friend("Nigel")
+nigel.description = "a burly dwarf with golden bead in woven through his beard."
+nigel.conversation = "Well youngan, what are you doing here?"
+
+# add characters to rooms
+armoury.character = ugine
+lab.character = nigel
 
 # initialise variables
 running = True
@@ -99,7 +100,6 @@ while running:
         else:
             print("There is no door in that direction")
             
-    
     # talk
     elif command == "talk":
         if current_room.character is not None:
@@ -115,15 +115,20 @@ while running:
     # fight
     elif command== "fight":
         if current_room.character is not None:
-            weapon = input("What will you fight with? > ").lower()
-            if player.item_in_backpack(weapon):
-                if current_room.character.fight(weapon):
-                    current_room.character = None
+            choice = input("What will you fight with? > ").lower()
+            weapon = player.item_in_backpack(choice)
+            if weapon:
+                win, hurt = current_room.character.fight(weapon)
+                if win:
                     if Enemy.num_of_enemy == 0:
                         print("You have slain the enemy. You are victorious!")
                         running = False
                 else:
-                    running = False
+                    alive = player.damage(hurt)
+                    print(f"You have {player.health} health left.")
+                    if not alive:
+                        print("You have been killed")
+                        running = False
             else:
                 print(f"You don't have {weapon}")
                 print(f"{current_room.character.name} strikes you down.")

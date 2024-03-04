@@ -4,7 +4,7 @@ class Player():
     
     def __init__(self):
         self.backpack = []
-        
+        self.health = 10
         
     def take_item(self, item):
         self.backpack.append(item)
@@ -21,6 +21,12 @@ class Player():
     def item_in_backpack(self, item_name):
         for item in self.backpack:
             if item.name == item_name:
-                return True
-        return False
+                return item
+        return None
         
+    def damage(self, amount):
+        self.health -= amount
+        if self.health > 0:
+            return True
+        else:
+            return False

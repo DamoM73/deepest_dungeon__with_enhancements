@@ -48,17 +48,31 @@ class Enemy(Character):
         # initialise the Enemy object by calling the character initialise
         super().__init__(name)
         self.weakness = None
+        self.damage = 2
+        self.health = 10
         Enemy.num_of_enemy += 1
         
+        
     def fight(self, item):
-        # fights enemy with provided item and returns if player survives
+        # fights enemy with provided item and returns if enemy is still alive
+        # calculate hit amount
         if item == self.weakness:
-            print(f"You strike {self.name} down with {item}.")
-            Enemy.num_of_enemy -= 1
-            return True
+            hit = item.damage * 5
         else:
-            print(f"{self.name} crushes you. Puny adventurer")
-            return False
+            hit = item.damage
+        
+        # assess damage
+        print(f"You hit {self.name} with {item.name} causing {hit} damage.")
+        print(f"{self.name} has {self.health} health left")
+        self.health -= hit
+        
+        if self.health <= 0:
+            print(f"You have slained {self.name}.")
+            Enemy.num_of_enemy -= 1
+            return True, 0
+        else:
+            print(f"{self.name} strikes back doing {self.damage} damage.")
+            return False, self.damage
     
     def get_num_of_enemy():
         return Enemy.num_of_enemy
