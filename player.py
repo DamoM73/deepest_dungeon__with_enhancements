@@ -8,15 +8,16 @@ class Player():
         
     def take_item(self, item):
         self.backpack.append(item)
-        print(f"You put {item.name} into your backpack")
+        return f"You put {item.name} into your backpack"
         
     def show_inventory(self):
         if self.backpack == []:
-            print("It is empty")
+            return "It is empty"
         else:
-            print("You have:")
+            message = "You have:"
             for item in self.backpack:
-                print(f"- {item.name.capitalize()}")
+                message += f"\n - {item.name.capitalize()}"
+            return message
                 
     def item_in_backpack(self, item_name):
         for item in self.backpack:

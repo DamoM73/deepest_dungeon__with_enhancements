@@ -9,5 +9,5 @@ class Item():
         
     def describe(self):
         # prints description of item to the terminal
-        print(f"You see {self.name} in the room. It is {self.description}.")
+        return f"\nYou see {self.name} in the room. It is {self.description}."
         

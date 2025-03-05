@@ -1,4 +1,5 @@
 # character.py
+import ollama
 
 class Character():
     
@@ -7,26 +8,30 @@ class Character():
         self.name = name
         self.description = None
         self.conversation = None
+        self.client = ollama.Client()
+        self.model = "phi"
         
     def describe(self):
         # sends a description of the character to the terminal
-        print(f"{self.name} is here, {self.description}")
+        return f"\n{self.name} is here, {self.description}"
         
     def talk(self):
         # send converstation to the terminal
         if self.conversation is not None:
-            print(f"{self.name}: {self.conversation}")
+            response = self.client.generate(model=self.model, prompt="Hello")
+            return(self.name, response.response)
         else:
-            print(f"{self.name} doesn't want to talk to you")
+            return(self.name, "Doesn't want to talk to you")
     
     def hug(self):
         # the character responds to a hug
-        print(f"{self.name} doesn't want to hug you")
+        return(self.name, "Doesn't want to hug you")
 
     def fight(self,item):
         # the character response to a threat
-        print(f"{self.name} doesn't want to fight you")
-        return True
+        return(True, -1, f"{self.name} doesn't want to fight you")
+        
+            
 
 
 class Friend(Character):
@@ -37,7 +42,7 @@ class Friend(Character):
         
     def hug(self):
         # the friend responds to a hug
-        print(f"{self.name} hugs you back.")
+        return(self.name, "Hugs you back.")
 
         
 class Enemy(Character):
@@ -62,17 +67,18 @@ class Enemy(Character):
             hit = item.damage
         
         # assess damage
-        print(f"You hit {self.name} with {item.name} causing {hit} damage.")
-        print(f"{self.name} has {self.health} health left")
+        message = ""
+        message += f"You hit {self.name} with {item.name} causing {hit} damage."
+        message += f"\n{self.name} has {self.health} health left."
         self.health -= hit
         
         if self.health <= 0:
-            print(f"You have slained {self.name}.")
+            message += f"\nYou have slained {self.name}."
             Enemy.num_of_enemy -= 1
-            return True, 0
+            return True, 0, message
         else:
-            print(f"{self.name} strikes back doing {self.damage} damage.")
-            return False, self.damage
+            message += f"\n{self.name} strikes back doing {self.damage} damage."
+            return False, self.damage, message
     
     def get_num_of_enemy():
         return Enemy.num_of_enemy

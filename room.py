@@ -13,14 +13,16 @@ class Room():
         
     def describe(self):
         # sends a description of the room to the terminal
-        print(f"\nYou are in the {self.name}")
-        print(self.description)
+        message = ""
+        message += f"You are in the {self.name}\n"
+        message += self.description
         if self.character is not None:
-            self.character.describe()
+            message += self.character.describe()
         if self.item is not None:
-            self.item.describe()
+            message += self.item.describe()
         for direction in self.linked_rooms.keys():
-            print(f"To the {direction} is the {self.linked_rooms[direction].name}")
+            message += f"\nTo the {direction} is the {self.linked_rooms[direction].name}"
+        return message
     
     def link_rooms(self, room, direction):
         # links the provided room, in the provided direction
