@@ -4,6 +4,10 @@ from room import Room
 from character import Enemy, Friend
 from item import Item
 from player import Player
+from display import Display
+
+# create display
+display = Display()
 
 # create player
 player = Player()
