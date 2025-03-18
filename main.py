@@ -64,7 +64,7 @@ ugine = Enemy("Ugine")
 ugine.description = "a huge troll with rotting teeth."
 ugine.weakness = cheese
 
-nigel = Friend("Nigel")
+nigel = Friend("Nigel", "nigel")
 nigel.description = "a burly dwarf with golden bead in woven through his beard."
 nigel.conversation = "Well youngan, what are you doing here?"
 

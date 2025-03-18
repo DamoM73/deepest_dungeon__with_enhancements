@@ -3,13 +3,17 @@ import ollama
 
 class Character():
     
-    def __init__(self, name):
+    def __init__(self, name, model):
         # initialises the character object
         self.name = name
         self.description = None
         self.conversation = None
         self.client = ollama.Client()
-        self.model = "phi"
+        if model is not None:
+            self.model = model
+        else:
+            self.model = "phi"
+        print(f"{self.name} using {self.model}")
         
     def describe(self):
         # sends a description of the character to the terminal
@@ -18,7 +22,7 @@ class Character():
     def talk(self):
         # send converstation to the terminal
         if self.conversation is not None:
-            response = self.client.generate(model=self.model, prompt="Hello")
+            response = self.client.generate(model=self.model, prompt="Who are you?")
             return(self.name, response.response)
         else:
             return(self.name, "Doesn't want to talk to you")
@@ -36,9 +40,9 @@ class Character():
 
 class Friend(Character):
     
-    def __init__(self, name):
+    def __init__(self, name, model=None):
         # initialise the Friend object by calling the character initialise
-        super().__init__(name)
+        super().__init__(name, model)
         
     def hug(self):
         # the friend responds to a hug
@@ -49,9 +53,9 @@ class Enemy(Character):
     
     num_of_enemy = 0
     
-    def __init__(self,name):
+    def __init__(self,name, model=None):
         # initialise the Enemy object by calling the character initialise
-        super().__init__(name)
+        super().__init__(name, model)
         self.weakness = None
         self.damage = 2
         self.health = 10
