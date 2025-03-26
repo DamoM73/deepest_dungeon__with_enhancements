@@ -1,4 +1,4 @@
-FROM phi
+FROM phi4-mini
 
 PARAMETER temperature 1
 

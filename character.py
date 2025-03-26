@@ -12,7 +12,7 @@ class Character():
         if model is not None:
             self.model = model
         else:
-            self.model = "phi"
+            self.model = "phi4-mini"
         print(f"{self.name} using {self.model}")
         
     def describe(self):
